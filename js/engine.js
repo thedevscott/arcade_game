@@ -76,7 +76,7 @@ var Engine = (function(global) {
             let y_diff = Math.abs(enemy.y - player.y);
 
             // Used to determine acceptable proximity to enemy
-            let distance = player.stride / 1.6;
+            let distance = 44; // player.stride / 1.6;
 
             if ( (x_diff <= distance ) && (y_diff <= distance) ) {
                player.ResetPosition();
