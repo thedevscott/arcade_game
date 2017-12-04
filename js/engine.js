@@ -68,6 +68,21 @@ var Engine = (function(global) {
         main();
     }
 
+    // Determine if the player and any enemies have colided
+    function checkCollisions() {
+
+        allEnemies.forEach(function(enemy) {
+            let x_diff = Math.abs(enemy.x - player.x);
+            let y_diff = Math.abs(enemy.y - player.y);
+
+            // Used to determine acceptable proximity to enemy
+            let distance = player.stride / 1.6;
+
+            if ( (x_diff <= distance ) && (y_diff <= distance) ) {
+               player.ResetPosition();
+            }
+        });
+    }
     /* This function is called by main (our game loop) and itself calls all
      * of the functions which may need to update entity's data. Based on how
      * you implement your collision detection (when two entities occupy the
@@ -79,7 +94,7 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
     }
 
     /* This is called by the update function and loops through all of the
