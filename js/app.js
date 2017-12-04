@@ -1,59 +1,143 @@
 // Enemies our player must avoid
-var Enemy = function(x_init, y_init) {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-    this.x = x_init;
-    this.y = y_init;
+var Enemy = function() {
+
+    // Instance variables for positioning in 2D
+    this.x = this.getInitPositionX();
+    this.y = this.getInitPositionY();
+
+    // Movement speed
+    this.base_speed = 20;
+    this.speed = this.getNewSpeed();
+
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
 };
 
+// Get initial position x value
+Enemy.prototype.getInitPositionX = function() {
+   // Acceptable starting positions
+   this.x_start_positions = [-180, 140, -90];
+   let x_index = Math.floor(Math.random() * 3);
+
+   return this.x_start_positions[x_index];
+}
+
+// Get initial position y value
+Enemy.prototype.getInitPositionY = function() {
+    // Acceptable starting y positions
+    this.y_start_positions = [55, 140, 220];
+    let y_index = Math.floor(Math.random() * 3);
+
+    return this.y_start_positions[y_index];
+ }
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    this.x += 20*dt;
+    this.x += this.speed * dt;
 
-    if(this.x >500) {
-        this.x = 0;
+    // Reposition sprite to left of the screen
+    if(this.x > 505) {
+        this.x = (Math.floor(Math.random() * 30) + 10) * -1;
+        this.y = this.getInitPositionY();
+
+        // Speed changes to 8-25 times as fast as first trek across screen
+        this.speed = this.getNewSpeed();
     }
 };
+
+// Allows the enemy to change speed
+Enemy.prototype.getNewSpeed = function()
+{
+    return this.base_speed * (Math.floor(Math.random() * 25) + 8);
+}
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
-var Player = function() {
+// Defines the Player and relevant attributes
+var Player = function(x_init=210, y_init=410) {
 
-    this.x = 230;
-    this.y = 350;
+    // Remember the startng x,y position
+    this.start_x = x_init;
+    this.start_y = y_init;
+
+    // Position values for 2D context
+    this.x = this.start_x;
+    this.y = this.start_y;
+
+    // Number of pixels the character moves per click
+    this.stride = 70;
+
+    // image used for the player
     this.sprite = 'images/char-boy.png';
-
 }
 
+// Put the player back to the starting position
+Player.prototype.ResetPosition = function() {
+    player.x = player.start_x;
+    player.y = player.start_y;
+}
+
+// Updates player position
 Player.prototype.update = function(dt) {
 
+    // Reached the water
+    if(this.y <= -10) {
+        console.log("You reached the water");
+        this.y = 410;
+    }
+
+    // Reposition sprite to stay in bounds
+    if(this.y > 410) {
+        this.y = 410;
+    }
+
+    // Right side of screen
+    if(this.x > 410) {
+        this.x = 410;
+    }
+
+    // Left side of screen
+    if(this.x < -10) {
+        this.x = -10;
+    }
 }
 
+// Draws the player image
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
-Player.prototype.handleInput = function() {
-console.log("did something");
+// Moves the player based on accepted input values
+Player.prototype.handleInput = function(keypressed) {
+
+   switch(keypressed) {
+       case 'up':
+            this.y -= this.stride;
+       break;
+
+       case 'down':
+            this.y += this.stride;
+       break;
+
+       case 'left':
+            this.x -= this.stride;
+       break;
+
+       case 'right':
+            this.x += this.stride;
+       break;
+   }
 }
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
-let allEnemies = [new Enemy(-90, 55), new Enemy(-90,140),
-    new Enemy(-90, 220)];
+
+// Create player and enemies
+let allEnemies = [new Enemy(), new Enemy(), new Enemy()];
 const player = new Player();
 
 
@@ -69,3 +153,18 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+/** TODO: Place in README
+ * The River of Prosperity.
+ * Search the river to increase thy prosperity. But be careful,
+ * The bugs that live nearby often sip from the river and can crush
+ * you like a new born insect.
+ *
+ * So cross carefully. Ha ha ha ha ha...
+ *
+ *
+ * Win!!
+ *
+ * Congratulations, you have found the Ruby of Prosperity.
+ * Hence forth, thou shall be greatly rewarded for thy deeds of positivity.
+ */
