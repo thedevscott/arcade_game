@@ -1,6 +1,19 @@
 frontend-nanodegree-arcade-game
 ===============================
 
-Students should use this [rubric](https://review.udacity.com/#!/projects/2696458597/rubric) for self-checking their submission. Make sure the functions you write are **object-oriented** - either class functions (like Player and Enemy) or class prototype functions such as Enemy.prototype.checkCollisions, and that the keyword 'this' is used appropriately within your class and class prototype functions to refer to the object the function is called upon. Also be sure that the **readme.md** file is updated with your instructions on both how to 1. Run and 2. Play your arcade game.
+# The River of Prosperity.
+Search the river to increase thy prosperity. But be careful,
+the bugs that live nearby often sip from the river and can crush
+you like a new born insect. So cross carefully. Ha ha ha ha ha...
 
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+# How to run the game
+* Download the files
+* Open the main directory & double click index.html
+   The game should be running now
+
+# How to play the game
+* Use the arrow keys to move left, right, up and down
+* Your goal is to make it to the waters as many times as possible to
+  increase your prosperity. Good luck!
+* Getting hit by the bugs sends you back to square 1, you loose all prosperity.
+    There is no set win score, keep improving your personal best.
