@@ -28,6 +28,15 @@ var Engine = (function(global) {
     canvas.height = 606;
     doc.body.appendChild(canvas);
 
+    // Div for displaying the score/prosperity
+    let prosperity = doc.createElement('div');
+    prosperity.className = "prosperity";
+    doc.body.appendChild(prosperity);
+
+    // Initial valus is zero
+    const score = document.getElementsByClassName('prosperity');
+    score[0].innerHTML = "Prosperity: 0";
+
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
      */
@@ -78,8 +87,10 @@ var Engine = (function(global) {
             // Used to determine acceptable proximity to enemy
             let distance = 44; // player.stride / 1.6;
 
+            // Reset relevant values and update displayed score
             if ( (x_diff <= distance ) && (y_diff <= distance) ) {
-               player.ResetPosition();
+               reset();
+               updateScore();
             }
         });
     }
@@ -93,6 +104,12 @@ var Engine = (function(global) {
      * on the entities themselves within your app.js file).
      */
     function update(dt) {
+
+        // Only update the score when the player scores
+        if (player.scored) {
+            updateScore();
+        }
+
         updateEntities(dt);
         checkCollisions();
     }
@@ -168,12 +185,18 @@ var Engine = (function(global) {
         player.render();
     }
 
-    /* This function does nothing but it could have been a good place to
-     * handle game reset states - maybe a new game menu or a game over screen
-     * those sorts of things. It's only called once by the init() method.
+    /* Sets the players initial position and score.
+     * Called in init() and checkCollision()
      */
     function reset() {
-        // noop
+        player.ResetPosition();
+        player.score = 0;
+    }
+
+    // Displays the updated player's score & resets scored to false
+    function updateScore() {
+        player.scored = false;
+        score[0].innerHTML = "Prosperity: " + player.score;
     }
 
     /* Go ahead and load all of the images we know we're going to need to
