@@ -8,13 +8,18 @@ var Enemy = function() {
     // Movement speed
     this.base_speed = 20;
     this.speed = this.getNewSpeed();
+    this.scored = false;
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
 };
 
-// Get initial position x value
+/**
+ * @description Get initial position x value form predefined list
+ * of values
+ * @return integer value for the x starting position
+ * */
 Enemy.prototype.getInitPositionX = function() {
    // Acceptable starting positions
    this.x_start_positions = [-180, 140, -90];
@@ -23,7 +28,11 @@ Enemy.prototype.getInitPositionX = function() {
    return this.x_start_positions[x_index];
 }
 
-// Get initial position y value
+/**
+ * @description Get initial position y value from a predefined list
+ * of values
+ * @returns interget value for the y starting position
+ */
 Enemy.prototype.getInitPositionY = function() {
     // Acceptable starting y positions
     this.y_start_positions = [55, 140, 220];
@@ -31,8 +40,11 @@ Enemy.prototype.getInitPositionY = function() {
 
     return this.y_start_positions[y_index];
  }
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
+
+/**
+ * @description Update the enemy's position, required method for game
+ * @param dt, a time delta between ticks
+ */
 Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
@@ -44,14 +56,16 @@ Enemy.prototype.update = function(dt) {
         this.x = (Math.floor(Math.random() * 30) + 10) * -1;
         this.y = this.getInitPositionY();
 
-        // Speed changes to 8-25 times as fast as first trek across screen
         this.speed = this.getNewSpeed();
     }
 };
 
-// Allows the enemy to change speed
-Enemy.prototype.getNewSpeed = function()
-{
+/**
+ * @description Allows the enemy to change speed to
+ * 8-25 times as fast as first trek across screen
+ * @returns A value representing the new speed for the Enemy object
+ */
+Enemy.prototype.getNewSpeed = function() {
     return this.base_speed * (Math.floor(Math.random() * 25) + 8);
 }
 
@@ -60,7 +74,10 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// Defines the Player and relevant attributes
+/** @description Defines the Player and relevant attributes
+ *  @param x_init the initial x position of the player: Default 210
+ *  @param y_init the initial y position of the player: Default 410
+ */
 var Player = function(x_init=210, y_init=410) {
 
     // Remember the startng x,y position
@@ -74,11 +91,14 @@ var Player = function(x_init=210, y_init=410) {
     // Number of pixels the character moves per click
     this.stride = 70;
 
+    // Players Score
+    this.score = 0;
+
     // image used for the player
     this.sprite = 'images/char-boy.png';
 }
 
-// Put the player back to the starting position
+// Puts the player back to the starting position
 Player.prototype.ResetPosition = function() {
     player.x = player.start_x;
     player.y = player.start_y;
@@ -89,8 +109,9 @@ Player.prototype.update = function(dt) {
 
     // Reached the water
     if(this.y <= -10) {
-        console.log("You reached the water");
+        this.scored = true;
         this.y = 410;
+        this.score += 10;
     }
 
     // Reposition sprite to stay in bounds
@@ -140,7 +161,6 @@ Player.prototype.handleInput = function(keypressed) {
 let allEnemies = [new Enemy(), new Enemy(), new Enemy()];
 const player = new Player();
 
-
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
@@ -153,18 +173,3 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
-
-/** TODO: Place in README
- * The River of Prosperity.
- * Search the river to increase thy prosperity. But be careful,
- * The bugs that live nearby often sip from the river and can crush
- * you like a new born insect.
- *
- * So cross carefully. Ha ha ha ha ha...
- *
- *
- * Win!!
- *
- * Congratulations, you have found the Ruby of Prosperity.
- * Hence forth, thou shall be greatly rewarded for thy deeds of positivity.
- */
