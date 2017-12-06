@@ -7,6 +7,9 @@ the bugs that live nearby often sip from the river and can crush
 you like a new born insect. So cross carefully. Ha ha ha ha ha...
 
 # How to run the game
+## Option 1:
+* [Click Here to play online](https://thedevscott.github.io/my_fend_arcade_game/ "Lets Play!")
+## Option 2
 * Download the files
 * Open the main directory & double click index.html
    The game should be running now
