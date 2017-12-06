@@ -85,7 +85,7 @@ var Engine = (function(global) {
             let y_diff = Math.abs(enemy.y - player.y);
 
             // Used to determine acceptable proximity to enemy
-            let distance = 44; // player.stride / 1.6;
+            let distance = 44;
 
             // Reset relevant values and update displayed score
             if ( (x_diff <= distance ) && (y_diff <= distance) ) {
@@ -151,7 +151,7 @@ var Engine = (function(global) {
             row, col;
         
         // Before drawing, clear existing canvas
-        ctx.clearRect(0,0,canvas.width,canvas.height)
+        ctx.clearRect(0,0,canvas.width,canvas.height);
 
         /* Loop through the number of rows and columns we've defined above
          * and, using the rowImages array, draw the correct image for that
