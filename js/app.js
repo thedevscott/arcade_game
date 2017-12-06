@@ -1,3 +1,5 @@
+"use strict()";
+
 // Enemies our player must avoid
 var Enemy = function() {
 
@@ -26,7 +28,7 @@ Enemy.prototype.getInitPositionX = function() {
    let x_index = Math.floor(Math.random() * 3);
 
    return this.x_start_positions[x_index];
-}
+};
 
 /**
  * @description Get initial position y value from a predefined list
@@ -35,11 +37,11 @@ Enemy.prototype.getInitPositionX = function() {
  */
 Enemy.prototype.getInitPositionY = function() {
     // Acceptable starting y positions
-    this.y_start_positions = [55, 140, 220];
+    this.y_start_positions = [45, 135, 220];
     let y_index = Math.floor(Math.random() * 3);
 
     return this.y_start_positions[y_index];
- }
+ };
 
 /**
  * @description Update the enemy's position, required method for game
@@ -67,7 +69,7 @@ Enemy.prototype.update = function(dt) {
  */
 Enemy.prototype.getNewSpeed = function() {
     return this.base_speed * (Math.floor(Math.random() * 25) + 8);
-}
+};
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
@@ -75,10 +77,10 @@ Enemy.prototype.render = function() {
 };
 
 /** @description Defines the Player and relevant attributes
- *  @param x_init the initial x position of the player: Default 210
- *  @param y_init the initial y position of the player: Default 410
+ *  @param x_init the initial x position of the player: Default 202
+ *  @param y_init the initial y position of the player: Default 300
  */
-var Player = function(x_init=210, y_init=410) {
+var Player = function(x_init=202, y_init=300) {
 
     // Remember the startng x,y position
     this.start_x = x_init;
@@ -88,74 +90,76 @@ var Player = function(x_init=210, y_init=410) {
     this.x = this.start_x;
     this.y = this.start_y;
 
-    // Number of pixels the character moves per click
-    this.stride = 70;
+    // Number of pixels the character moves per click in x & y direction
+    // These values help keep the player centered on the tiles
+    this.x_stride = 101;
+    this.y_stride = 86;
 
     // Players Score
     this.score = 0;
 
     // image used for the player
     this.sprite = 'images/char-boy.png';
-}
+};
 
 // Puts the player back to the starting position
 Player.prototype.ResetPosition = function() {
-    player.x = player.start_x;
-    player.y = player.start_y;
-}
+    this.x = this.start_x;
+    this.y = this.start_y;
+};
 
 // Updates player position
 Player.prototype.update = function(dt) {
 
     // Reached the water
-    if(this.y <= -10) {
+    if(this.y <= -1) {
         this.scored = true;
-        this.y = 410;
+        this.y = this.start_y;
         this.score += 10;
     }
 
     // Reposition sprite to stay in bounds
-    if(this.y > 410) {
-        this.y = 410;
+    if(this.y >= 386) {
+        this.y = 386;
     }
 
     // Right side of screen
-    if(this.x > 410) {
-        this.x = 410;
+    if(this.x > 400) {
+        this.x = 400;
     }
 
     // Left side of screen
-    if(this.x < -10) {
-        this.x = -10;
+    if(this.x < 0) {
+        this.x = 0;
     }
-}
+};
 
 // Draws the player image
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 
 // Moves the player based on accepted input values
 Player.prototype.handleInput = function(keypressed) {
 
    switch(keypressed) {
        case 'up':
-            this.y -= this.stride;
+            this.y -= this.y_stride;
        break;
 
        case 'down':
-            this.y += this.stride;
+            this.y += this.y_stride;
        break;
 
        case 'left':
-            this.x -= this.stride;
+            this.x -= this.x_stride;
        break;
 
        case 'right':
-            this.x += this.stride;
+            this.x += this.x_stride;
        break;
    }
-}
+};
 
 // Create player and enemies
 let allEnemies = [new Enemy(), new Enemy(), new Enemy()];
